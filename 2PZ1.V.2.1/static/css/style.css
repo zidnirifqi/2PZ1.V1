@@ -1,0 +1,51 @@
+/* Warna Coklat Premium */
+.bg-brown {
+    background: linear-gradient(135deg, #5a3e36, #8b5e3b);
+}
+.text-brown {
+    color: #8b5e3b;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.sidebar .nav-link {
+    font-size: 16px;
+    padding: 10px;
+    transition: 0.3s;
+}
+.sidebar .nav-link:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+}
+
+/* Card Styling */
+.card {
+    transition: all 0.3s ease-in-out;
+    border-radius: 12px;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Main Content */
+.main-content {
+    background: #f8f9fa;
+}
+.footer {
+    font-size: 0.9rem;
+    font-weight: 500;
+    background: linear-gradient(to right, #e0e0e0, #f8f9fa); /* Gradasi abu-abu elegan */
+    padding: 15px 0;
+    color: #444; /* Warna teks lebih soft */
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1); /* Efek bayangan untuk tampilan elegan */
+}
+
+.footer span {
+    font-weight: 600;
+}

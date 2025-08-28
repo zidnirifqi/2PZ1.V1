@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verifikasi OTP</title>
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #ffffff, #ffffff);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 350px;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .logo-container img {
+            max-width: 500px;
+            height: auto;
+        }
+
+        .card h4 {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .otp-input {
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            letter-spacing: 4px;
+            border-radius: 10px;
+            border: 2px solid #ced4da;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .otp-input:focus {
+            border-color: #6c757d;
+            box-shadow: 0 0 10px #6c757d;
+        }
+
+        .timer {
+            font-size: 14px;
+            font-weight: bold;
+            color: #dc3545;
+            margin-top: 10px;
+        }
+
+        .btn-verify {
+            background: #6c757d;
+            border: none;
+            font-size: 16px;
+            padding: 10px;
+            transition: all 0.3s ease-in-out;
+            width: 100%;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .btn-verify:hover {
+            background: #6c757d;
+            transform: scale(1.05);
+        }
+
+        .btn-disabled {
+            background: #6c757d !important;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="logo-container">
+        <img src="{{ url_for('static', filename='img/logo3.png') }}" alt="Logo">
+    </div>
+    <h4>Verifikasi OTP</h4>
+    <p class="text-muted">Masukkan kode yang dikirim ke email</p>
+
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-warning text-center py-2">{{ message }}</div>
+    {% endfor %}
+
+    <form id="otpForm" action="{{ url_for('verifikasi') }}" method="POST">
+        <input type="text" name="otp" class="form-control otp-input my-3" maxlength="6"
+               placeholder="●●●●●●" required>
+        <button type="submit" id="verifyBtn" class="btn btn-primary btn-verify">Verifikasi</button>
+    </form>
+
+    <p class="timer">Kode berlaku selama <span id="countdown">02:00</span></p>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    let timerElement = document.getElementById("countdown");
+    let verifyBtn = document.getElementById("verifyBtn");
+    let otpForm = document.getElementById("otpForm");
+    let timeLeft = 120;  // 2 menit
+
+    function updateTimer() {
+        let minutes = Math.floor(timeLeft / 60);
+        let seconds = timeLeft % 60;
+        timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+        if (timeLeft > 0) {
+            timeLeft--;
+            setTimeout(updateTimer, 1000);
+        } else {
+            // Jika waktu habis, ubah tombol menjadi "Kirim Ulang Kode"
+            verifyBtn.textContent = "Kirim Ulang Kode";
+            verifyBtn.classList.add("btn-disabled");
+            verifyBtn.setAttribute("onclick", "resendOTP()");
+            otpForm.setAttribute("action", "{{ url_for('resend_otp') }}");
+        }
+    }
+
+    function resendOTP() {
+        window.location.href = "{{ url_for('resend_otp') }}";
+    }
+
+    updateTimer();
+</script>
+
+</body>
+</html>
+<footer class="text-center w-100 py-2 fixed-bottom" style="background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(10px); font-size: 12px; font-weight: bold; color: #333;">
+    &copy; 2025 Dashboard All Dept | zidnirifqi.
+</footer>
